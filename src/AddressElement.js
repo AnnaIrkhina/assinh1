@@ -101,11 +101,7 @@ function AddressElement(props) {
                     </div>
 
                 </>
-                : <div>
-
-
-
-
+                : <div onDoubleClick={edit}>
                     <div><b>City: </b>{props.address.city}</div>
                     <div><b>Street: </b>{props.address.street}</div>
                     <div><b>Suite: </b>{props.address.suite}</div>

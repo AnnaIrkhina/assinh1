@@ -94,7 +94,7 @@ function CompanyElement(props) {
                     </div>
 
                 </>
-                : <div>
+                : <div onDoubleClick={edit}>
 
 
                     <div><b>Name: </b>{props.company.name}</div>

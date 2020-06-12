@@ -81,7 +81,7 @@ function App() {
         = (value, id) => {
         console.log("onChange launched", value, id);
         const updatedUsers = users.map(el => {
-            if (el.id === id) return {...el, phone: value};
+            if (el.id === id) return {...el, website: value};
             else return el;
         });
         setUsers(updatedUsers);
