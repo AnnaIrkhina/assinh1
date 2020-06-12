@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/AnnaIrkhina.github.io/assinh1/static/css/main.41e0337f.chunk.css",
+    "main.js": "/AnnaIrkhina.github.io/assinh1/static/js/main.fc1f8354.chunk.js",
+    "main.js.map": "/AnnaIrkhina.github.io/assinh1/static/js/main.fc1f8354.chunk.js.map",
+    "runtime-main.js": "/AnnaIrkhina.github.io/assinh1/static/js/runtime-main.07461ccb.js",
+    "runtime-main.js.map": "/AnnaIrkhina.github.io/assinh1/static/js/runtime-main.07461ccb.js.map",
+    "static/css/2.af3c1da9.chunk.css": "/AnnaIrkhina.github.io/assinh1/static/css/2.af3c1da9.chunk.css",
+    "static/js/2.a10d8bd4.chunk.js": "/AnnaIrkhina.github.io/assinh1/static/js/2.a10d8bd4.chunk.js",
+    "static/js/2.a10d8bd4.chunk.js.map": "/AnnaIrkhina.github.io/assinh1/static/js/2.a10d8bd4.chunk.js.map",
+    "index.html": "/AnnaIrkhina.github.io/assinh1/index.html",
+    "precache-manifest.1cb5c8e15ed402284eb01948c0aceca5.js": "/AnnaIrkhina.github.io/assinh1/precache-manifest.1cb5c8e15ed402284eb01948c0aceca5.js",
+    "service-worker.js": "/AnnaIrkhina.github.io/assinh1/service-worker.js",
+    "static/css/2.af3c1da9.chunk.css.map": "/AnnaIrkhina.github.io/assinh1/static/css/2.af3c1da9.chunk.css.map",
+    "static/css/main.41e0337f.chunk.css.map": "/AnnaIrkhina.github.io/assinh1/static/css/main.41e0337f.chunk.css.map",
+    "static/js/2.a10d8bd4.chunk.js.LICENSE.txt": "/AnnaIrkhina.github.io/assinh1/static/js/2.a10d8bd4.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.07461ccb.js",
+    "static/css/2.af3c1da9.chunk.css",
+    "static/js/2.a10d8bd4.chunk.js",
+    "static/css/main.41e0337f.chunk.css",
+    "static/js/main.fc1f8354.chunk.js"
+  ]
+}
