@@ -64,41 +64,49 @@ function AddUser(props) {
         console.log('onChangeName exit');
     }
     const onChangeUserName = (e) => {
-        setUser({...user, userName: e.target.value});
+        setUser({...user, username: e.target.value});
         console.log(user);
     }
     const onChangeEmail = (e) => {
         setUser({...user, email: e.target.value});
         console.log(user);
     }
+    const onPhone = (e) => {
+        setUser({...user, phone: e.target.value});
+        console.log(user);
+    }
+    const onChangeWebsite = (e) => {
+        setUser({...user, website: e.target.value});
+        console.log(user);
+    }
     const onchangeCity = (e) => {
-        setUser({...user, address: {city: e.target.value}});
+        setUser({...user, address: {...user.address, city: e.target.value}});
         console.log(user);
     }
     const onchangeStreet = (e) => {
-        setUser({...user, address: {street: e.target.value}});
+        setUser({...user, address: {...user.address, street: e.target.value}});
         console.log(user);
     }
     const onchangeSuite = (e) => {
-        setUser({...user, address: {suite: e.target.value}});
+        setUser({...user, address: {...user.address, suite: e.target.value}});
         console.log(user);
     }
     const onchangeZipcode = (e) => {
-        setUser({...user, address: {zipcode: e.target.value}});
+        setUser({...user, address: {...user.address, zipcode: e.target.value}});
         console.log(user);
     }
 
 
     const onchangeCompanyName = (e) => {
-        setUser({...user, company: {name: e.target.value}});
+        setUser({...user, company: {...user.company, name: e.target.value}});
         console.log(user);
     }
     const onchangeBS = (e) => {
-        setUser({...user, company: {bs: e.target.value}});
+        setUser({...user, company: {...user.company, bs: e.target.value}});
         console.log(user);
     }
     const onchangeCatch = (e) => {
-        setUser({...user, company: {catchphrase: e.target.value}});
+        setUser({...user, company: {...user.company, catchPhrase: e.target.value}});
         console.log(user);
     }
     const addUser = () => {
@@ -170,7 +178,7 @@ function AddUser(props) {
                     <div className="form-group">
                         <label>Phone:</label>
                         <input type="text" className="form-control" id="formControlInputPhone"
-                               value={user.phone} onChange={onChangeEmail} autoFocus="true"
+                               value={user.phone} onChange={onPhone} autoFocus="true"
 
                         />
 
@@ -180,7 +188,7 @@ function AddUser(props) {
                     <div className="form-group">
                         <label>Website:</label>
                         <input type="text" className="form-control" id="formControlInputWebsite"
-                               value={user.website} onChange={onChangeEmail} autoFocus="true"
+                               value={user.website} onChange={onChangeWebsite} autoFocus="true"
 
                         />
 
