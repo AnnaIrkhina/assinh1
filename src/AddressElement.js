@@ -93,8 +93,8 @@ function AddressElement(props) {
 
 
                         <div className="button_group">
-                            <button className="btn btn-sm float-right" onClick={onCancelClicked}>{cancel}</button>
-                            <button className="btn btn-sm float-right" onClick={onSaveClicked}
+                            <button className="btn btn-sm btn-danger float-right" onClick={onCancelClicked}>{cancel}</button>
+                            <button className="btn btn-sm btn-success float-right" onClick={onSaveClicked}
                                     disabled={elementEdit.city.trim() === '' && elementEdit.street.trim()  === ''&& elementEdit.suite.trim() === '' &&  elementEdit.zipcode.trim() === ''}>{check}</button>
 
                         </div>
@@ -111,7 +111,7 @@ function AddressElement(props) {
                     <div><b>Suite: </b>{props.address.suite}</div>
                     <div><b>Zipcode: </b>{props.address.zipcode}</div>
 
-                    <button className="btn btn-sm float-sm-right" onClick={edit}>
+                    <button className="btn btn-sm  btn-secondary float-sm-right" onClick={edit}>
                         {editPen}
                     </button>
 

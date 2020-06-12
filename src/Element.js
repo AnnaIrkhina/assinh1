@@ -80,7 +80,7 @@ function Element(props) {
                 : <div  onDoubleClick={edit}>
                     {/*<button className="btn btn-sm float-sm-left" onClick={edit} >{editPen}</button>*/}
                     <div>{props.value}</div>
-                    <button className="btn btn-sm float-sm-right" onClick={edit}>
+                    <button className="btn btn-sm btn-secondary float-sm-right" onClick={edit}>
                         {editPen}
                     </button>
 
