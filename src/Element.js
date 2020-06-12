@@ -69,9 +69,10 @@ function Element(props) {
                                onKeyPress={onKeyPressed}
                         />
                         <div className="button_group">
-                            <button className="btn btn-sm float-right" onClick={onSaveClicked}
+
+                            <button className="btn btn-sm btn-danger float-right" onClick={onCancelClicked}>{cancel}</button>
+                            <button className="btn btn-success btn-sm float-right" onClick={onSaveClicked}
                                     disabled={elementEdit.trim() === ''}>{check}</button>
-                            <button className="btn btn-sm float-right" onClick={onCancelClicked}>{cancel}</button>
                         </div>
                     </div>
 

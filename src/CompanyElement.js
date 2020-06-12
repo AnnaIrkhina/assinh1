@@ -86,9 +86,10 @@ function CompanyElement(props) {
                                value={elementEdit.catchPhrase} onChange={changeCatch} autoFocus="true"/>
 
                         <div className="button_group">
+                            <button className="btn btn-sm float-right" onClick={onCancelClicked}>{cancel}</button>
                             <button className="btn btn-sm float-right" onClick={onSaveClicked}
                                     disabled={elementEdit.name.trim() === '' && elementEdit.bs.trim()  === ''&& elementEdit.catchPhrase.trim() === ''}>{check}</button>
-                            <button className="btn btn-sm float-right" onClick={onCancelClicked}>{cancel}</button>
+
                         </div>
                     </div>
 

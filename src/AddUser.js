@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
 
 const check = (<svg className="bi bi-check-circle" width="1em" height="1em" viewBox="0 0 16 16"
@@ -30,126 +30,190 @@ const editPen = (
 
 function AddUser(props) {
 
-    const onChangeName = ()=>{
-    }
-    const onChangeUserName = ()=>{
-    }
-    const onchangeCity = ()=>{
-    }
-    const onchangeStreet = ()=>{
-    }
-    const onchangeSuite = ()=>{
-    }
-    const onchangeZipcode = ()=>{
-    }
-    const onChangeEmail = ()=>{
-    }
-    const onSaveClicked = ()=>{
-    }
-    const onCancelClicked = ()=>{
-
-    }
-    const onchangeCompanyName = ()=>{
-    }
-    const onchangeBS = ()=>{
-    }
-    const onchangeCatch = ()=>{
+    const initialUser = {
+        id: props.id,
+        name: '',
+        username: '',
+        email: '',
+        address: {
+            city: '',
+            street: '',
+            suite: '',
+            zipcode: ''
+        },
+        phone: '',
+        website: '',
+        company: {
+            name: '',
+            bs: '',
+            catchPhrase: ''
+        }
     }
 
+    const [user, setUser] = useState(initialUser);
+
+    const onChangeName = (e) => {
+        console.log('onChangeName launched');
+        console.log('user');
+        console.log(user);
+
+        const updatedUser = {...user, name: e.target.value}
+        console.log('updatedUser');
+        setUser(updatedUser);
+        console.log(updatedUser);
+        console.log('onChangeName exit');
+    }
+    const onChangeUserName = (e) => {
+        setUser({...user, userName: e.target.value});
+        console.log(user);
+    }
+    const onChangeEmail = (e) => {
+        setUser({...user, email: e.target.value});
+        console.log(user);
+    }
+    const onchangeCity = (e) => {
+        setUser({...user, address: {city: e.target.value}});
+        console.log(user);
+    }
+    const onchangeStreet = (e) => {
+        setUser({...user, address: {street: e.target.value}});
+        console.log(user);
+    }
+    const onchangeSuite = (e) => {
+        setUser({...user, address: {suite: e.target.value}});
+        console.log(user);
+    }
+    const onchangeZipcode = (e) => {
+        setUser({...user, address: {zipcode: e.target.value}});
+        console.log(user);
+    }
+
+
+    const onchangeCompanyName = (e) => {
+        setUser({...user, company: {name: e.target.value}});
+        console.log(user);
+    }
+    const onchangeBS = (e) => {
+        setUser({...user, company: {bs: e.target.value}});
+        console.log(user);
+    }
+    const onchangeCatch = (e) => {
+        setUser({...user, company: {catchphrase: e.target.value}});
+        console.log(user);
+    }
+    const addUser = () => {
+        setUser({...user, id: props.id});
+        console.log(user);
+        props.addUser(user);
+        setUser(initialUser);
+
+    }
+    const cancelAddUser = () => {
+        setUser(initialUser);
+        console.log(user);
+        props.canceAddUser();
+    }
 
     return (
-        <tr>
-            <td>{props.id}
-                <div className="button_group">
-                    <button className="btn btn-sm float-right" onClick={props.addUser}
-                           >{check}</button>
-                    <button className="btn btn-sm float-right" onClick={props.canceAddUser}>{cancel}</button>
-                </div>
-            </td>
-            <td>
-                <div className="form-group">
-                    <label>Name:</label>
-                    <input type="text" className="form-control" id="formControlInput1"
-                           value={''} onChange={onChangeName} autoFocus="true"
+        <>
 
-                    />
+            <tr>
+                <td>{props.id}
 
-                </div>
-            </td>
-            <td>
-                <div className="form-group">
-                    <label>Username:</label>
-                    <input type="text" className="form-control" id="formControlInput1"
-                           value={''} onChange={onChangeUserName} autoFocus="true"
-                    />
-                </div>
-            </td>
-            <td>
-                <div className="form-group">
-                    <label>Email:</label>
-                    <input type="text" className="form-control" id="formControlInput1"
-                           value={''} onChange={onChangeEmail} autoFocus="true"
+                </td>
+                <td>
+                    <div className="form-group">
+                        <label>Name:</label>
+                        <input type="text" className="form-control" id="formControlInputName"
+                               value={user.name} onChange={onChangeName} autoFocus="true"
 
-                    />
+                        />
 
-                </div>
-            </td>
-            <td>
-                <div>
-
-                    <label>City:</label>
-                    <input type="text" className="form-control" id="formControlInput1"
-                           value={''} onChange={onchangeCity} autoFocus="true"/>
-                    <label>Street:</label>
-                    <input type="text" className="form-control" id="formControlInput1"
-                           value={''} onChange={onchangeStreet} autoFocus="true"/>
-                    <label>Suite:</label>
-                    <input type="text" className="form-control" id="formControlInput1"
-                           value={''} onChange={onchangeSuite} autoFocus="true"/>
-                    <label>Zipcode:</label>
-                    <input type="text" className="form-control" id="formControlInput1"
-                           value={''} onChange={onchangeZipcode} autoFocus="true"/>
-                </div>
-            </td>
-            <td>
-                <div className="form-group">
-                    <label>Phone:</label>
-                    <input type="text" className="form-control" id="formControlInput1"
-                           value={''} onChange={onChangeEmail} autoFocus="true"
-
-                    />
-
-                </div>
-            </td>
-            <td>
-                <div className="form-group">
-                    <label>Website:</label>
-                    <input type="text" className="form-control" id="formControlInput1"
-                           value={''} onChange={onChangeEmail} autoFocus="true"
-
-                    />
-
-                </div>
-            </td>
-            <td>
-                <div>
-
-                    <label>Name:</label>
-                    <input type="text" className="form-control" id="formControlInput1"
-                           value={''} onChange={onchangeCompanyName} autoFocus="true"/>
-                    <label>BS:</label>
-                    <input type="text" className="form-control" id="formControlInput1"
-                           value={''} onChange={onchangeBS} autoFocus="true"/>
-                    <label>Catch Phrase: </label>
-                    <input type="text" className="form-control" id="formControlInput1"
-                           value={''} onChange={onchangeCatch} autoFocus="true"/>
                     </div>
-            </td>
+                </td>
+                <td>
+                    <div className="form-group">
+                        <label>Username:</label>
+                        <input type="text" className="form-control" id="formControlInputUserName"
+                               value={user.username} onChange={onChangeUserName} autoFocus="true"
+                        />
+                    </div>
+                </td>
+                <td>
+                    <div className="form-group">
+                        <label>Email:</label>
+                        <input type="text" className="form-control" id="formControlInputEmail"
+                               value={user.email} onChange={onChangeEmail} autoFocus="true"
 
-        </tr>
+                        />
 
+                    </div>
+                </td>
+                <td>
+                    <div>
 
-);
+                        <label>City:</label>
+                        <input type="text" className="form-control" id="formControlInputCity1"
+                               value={user.address.city} onChange={onchangeCity} autoFocus="true"/>
+                        <label>Street:</label>
+                        <input type="text" className="form-control" id="formControlInputStreet"
+                               value={user.address.street} onChange={onchangeStreet} autoFocus="true"/>
+                        <label>Suite:</label>
+                        <input type="text" className="form-control" id="formControlInputSuite"
+                               value={user.address.suite} onChange={onchangeSuite} autoFocus="true"/>
+                        <label>Zipcode:</label>
+                        <input type="text" className="form-control" id="formControlInputZipcode"
+                               value={user.address.zipcode} onChange={onchangeZipcode} autoFocus="true"/>
+                    </div>
+                </td>
+                <td>
+                    <div className="form-group">
+                        <label>Phone:</label>
+                        <input type="text" className="form-control" id="formControlInputPhone"
+                               value={user.phone} onChange={onChangeEmail} autoFocus="true"
+
+                        />
+
+                    </div>
+                </td>
+                <td>
+                    <div className="form-group">
+                        <label>Website:</label>
+                        <input type="text" className="form-control" id="formControlInputWebsite"
+                               value={user.website} onChange={onChangeEmail} autoFocus="true"
+
+                        />
+
+                    </div>
+                </td>
+                <td>
+                    <div>
+
+                        <label>Name:</label>
+                        <input type="text" className="form-control" id="formControlInputCompanyName"
+                               value={user.company.name} onChange={onchangeCompanyName} autoFocus="true"/>
+                        <label>BS:</label>
+                        <input type="text" className="form-control" id="formControlInputBS"
+                               value={user.company.bs} onChange={onchangeBS} autoFocus="true"/>
+                        <label>Catch Phrase: </label>
+                        <input type="text" className="form-control" id="formControlInputCatch"
+                               value={user.company.catchPhrase} onChange={onchangeCatch} autoFocus="true"/>
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+                <td colSpan='10'>
+                    <div className="button_group">
+
+                        <button className="btn btn-danger  m-1" onClick={cancelAddUser}>Cancel</button>
+                        <button className="btn btn-success m-1" onClick={addUser}disabled={user.name.trim() ===''}>Save</button>
+                    </div>
+                </td>
+            </tr>
+        </>
+
+    );
 }
 
 export default AddUser;

@@ -93,9 +93,10 @@ function AddressElement(props) {
 
 
                         <div className="button_group">
+                            <button className="btn btn-sm float-right" onClick={onCancelClicked}>{cancel}</button>
                             <button className="btn btn-sm float-right" onClick={onSaveClicked}
                                     disabled={elementEdit.city.trim() === '' && elementEdit.street.trim()  === ''&& elementEdit.suite.trim() === '' &&  elementEdit.zipcode.trim() === ''}>{check}</button>
-                            <button className="btn btn-sm float-right" onClick={onCancelClicked}>{cancel}</button>
+
                         </div>
                     </div>
 

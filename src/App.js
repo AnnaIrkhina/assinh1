@@ -10,6 +10,7 @@ function App() {
     const [users, setUsers] = useState([]);
     const [editingMode, setEditingMode] = useState(false)
     const load = () => {
+        setEditingMode(false);
         console.log('load');
         // fetch('https://jsonplaceholder.typicode.com/users')
         //     .then(response => response.json())
@@ -123,6 +124,8 @@ function App() {
         const updatedUsers = [... users];
         updatedUsers.push(el)
         setUsers(updatedUsers);
+        setEditingMode(false);
+
     }
     const maxID = ()=>{
         let max = 0;
@@ -132,9 +135,12 @@ function App() {
     return (
         <div>
             <h1>Users</h1>
-            {users.length <= 0 ?<button className="btn btn-primary mb-3" onClick={load}>Load Users</button>
-                :<><button className="btn btn-primary mb-3" onClick={load}>Reoad Users</button>
-                <button className="btn btn-primary mb-3" onClick={onAddUser}>Add User</button></>}
+            {users.length <= 0 ?<button className="btn btn-primary m-1" onClick={load}>Load Users</button>
+                :<><button className="btn btn-primary m-1" onClick={load}>Reoad Users</button>
+                {!editingMode? <button className="btn btn-primary m-1" onClick={onAddUser}>Add User</button>
+                :<></>}
+                </>
+            }
             {users.length > 0 ?
                 <div>
                     <table className="table table table-hover table-bordered table-striped">
