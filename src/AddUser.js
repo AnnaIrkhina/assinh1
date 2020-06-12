@@ -214,8 +214,9 @@ function AddUser(props) {
                 <td colSpan='10'>
                     <div className="button_group">
 
-                        <button className="btn btn-danger  m-1" onClick={cancelAddUser}>Cancel</button>
+
                         <button className="btn btn-success m-1" onClick={addUser}disabled={user.name.trim() ===''}>Save</button>
+                        <button className="btn btn-danger  m-1" onClick={cancelAddUser}>Cancel</button>
                     </div>
                 </td>
             </tr>
