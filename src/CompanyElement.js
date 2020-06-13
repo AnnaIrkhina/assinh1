@@ -101,9 +101,9 @@ function CompanyElement(props) {
                     <div><b>BS: </b>{props.company.bs}</div>
                     <div><b>Catch Phrase: </b>{props.company.catchPhrase}</div>
 
-                    <button className="btn btn-sm  btn-secondary  float-sm-right" onClick={edit}>
-                        {editPen}
-                    </button>
+                    {/*<button className="btn btn-sm  btn-secondary  float-sm-right" onClick={edit}>*/}
+                    {/*    {editPen}*/}
+                    {/*</button>*/}
 
 
                 </div>

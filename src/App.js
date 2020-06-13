@@ -132,11 +132,32 @@ function App() {
         users.map(el=> { if(el.id > max) max = el.id});
         return max;
     }
+    const onCheck = (id)=>{
+        console.log('onCheck launched with is = ' + id);
+        const updatedUsers = users.map(el=>{
+            if(el.id === id) {
+                if(el.checked === true){return{...el, checked: false}}
+                else{return{...el, checked: true}}
+            }
+            else {
+                if(el.checked === undefined){return{...el, checked: false}}
+                else return el;
+            }
+
+        });
+        setUsers(updatedUsers);
+
+    }
+    const removeAllChecked =()=>{
+        const updatedUsers = users.filter(el=> el.checked !== true);
+        setUsers(updatedUsers);
+    }
     return (
         <div>
             <h1>Users</h1>
             {users.length <= 0 ?<button className="btn btn-primary m-1" onClick={load}>Load Users</button>
-                :<><button className="btn btn-primary m-1" onClick={load}>Reoad Users</button>
+                :<><button className="btn btn-primary m-1" onClick={load}>Reload Users</button>
+                    <button className="btn btn-primary m-1" onClick={removeAllChecked}>Remove All Checked</button>
                 {!editingMode? <button className="btn btn-primary m-1" onClick={onAddUser}>Add User</button>
                 :<></>}
                 </>
@@ -160,7 +181,7 @@ function App() {
                         {editingMode?<AddUser id={maxID()+1} addUser={addUser} canceAddUser={canceAddUser}/>:<></>}
                         {users.map(el =>
                             <tr>
-                                <td>{el.id}</td>
+                                <td>{el.id}<input type="checkbox" onClick={()=>onCheck(el.id)} checked={el.checked === true}/></td>
                                 <td><Element value={el.name} id={el.id} saveValue={saveName}/></td>
                                 <td><Element value={el.username} id={el.id} saveValue={saveUserName}/></td>
                                 <td><Element value={el.email} id={el.id} saveValue={saveEmail}/></td>
