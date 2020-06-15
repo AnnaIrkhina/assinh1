@@ -38,8 +38,11 @@ function AddressElement(props) {
     // const [zippEdit, setZippEdit] = useState('');
 
     const edit = () => {
-        setEditMode(true);
-        setElementEdit(props.address);
+        if (props.editingMode === false) {
+            setEditMode(true);
+            setElementEdit(props.address);
+            props.setEditingMode(true);
+        }
         // setCityEdit(props.address.city);
         // setStreetEdit(props.address.street);
         // setSuiteEdit(props.address.suite);
@@ -47,36 +50,38 @@ function AddressElement(props) {
 
     }
     const changeCity = (e) => {
-        setElementEdit({...elementEdit, city:e.target.value});
+        setElementEdit({...elementEdit, city: e.target.value});
 
     }
     const changeStreet = (e) => {
-        setElementEdit({...elementEdit, street:e.target.value});
+        setElementEdit({...elementEdit, street: e.target.value});
 
     }
     const changeSuite = (e) => {
-        setElementEdit({...elementEdit, suite:e.target.value});
+        setElementEdit({...elementEdit, suite: e.target.value});
 
     }
     const changeZipcode = (e) => {
-        setElementEdit({...elementEdit, zipcode:e.target.value});
+        setElementEdit({...elementEdit, zipcode: e.target.value});
 
     }
     const onCancelClicked = () => {
         setEditMode(false);
         setElementEdit({});
+        props.setEditingMode(false);
     }
     const onSaveClicked = () => {
         props.saveValue(elementEdit, props.id);
         setEditMode(false);
         setElementEdit('');
+        props.setEditingMode(false);
     }
 
     return (
         <div>
             {editMode ?
                 <>
-                    <div>
+                    <div className="form-group">
 
                         <label>City:</label>
                         <input type="text" className="form-control" id="formControlInput1"
@@ -93,11 +98,14 @@ function AddressElement(props) {
 
 
                         <div className="button_group">
-                            <button className="btn btn-sm btn-danger float-right" onClick={onCancelClicked}>{cancel}</button>
-                            <button className="btn btn-sm btn-success float-right" onClick={onSaveClicked}
-                                    disabled={elementEdit.city.trim() === '' && elementEdit.street.trim()  === ''&& elementEdit.suite.trim() === '' &&  elementEdit.zipcode.trim() === ''}>{check}</button>
+
+                            <button  className="btn btn-sm btn-danger float-right"
+                                    onClick={onCancelClicked}>{cancel}</button>
+                            <button  className="btn btn-sm btn-success float-right" onClick={onSaveClicked}
+                                    disabled={elementEdit.city.trim() === '' && elementEdit.street.trim() === '' && elementEdit.suite.trim() === '' && elementEdit.zipcode.trim() === ''}>{check}</button>
 
                         </div>
+
                     </div>
 
                 </>

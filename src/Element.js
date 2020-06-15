@@ -34,21 +34,29 @@ function Element(props) {
     const [elementEdit, setElementEdit] = useState('')
 
     const edit = () => {
-        setEditMode(true);
-        setElementEdit(props.value);
+        if (props.editingMode === false) {
+            setEditMode(true);
+            setElementEdit(props.value);
+            props.setEditingMode(true);
+
+        }
+
     }
     const change = (e) => {
         setElementEdit(e.target.value);
         console.log(e.target.value);
+
     }
     const onCancelClicked = () => {
         setEditMode(false);
         setElementEdit('');
+        props.setEditingMode(false);
     }
     const onSaveClicked = () => {
         props.saveValue(elementEdit, props.id);
         setEditMode(false);
         setElementEdit('');
+        props.setEditingMode(false);
     }
     const onKeyPressed = (e) => {
         if (e.key === "Enter") onSaveClicked();
@@ -59,10 +67,10 @@ function Element(props) {
 
 
     return (
-        <div >
+        <div>
             {editMode ?
                 <>
-                    <div  className="form-group">
+                    <div className="form-group">
 
                         <input type="text" className="form-control" id="formControlInput1"
                                value={elementEdit} onChange={change} autoFocus="true"
@@ -70,14 +78,15 @@ function Element(props) {
                         />
                         <div className="button_group">
 
-                            <button className="btn btn-sm btn-danger float-right" onClick={onCancelClicked}>{cancel}</button>
+                            <button className="btn btn-sm btn-danger float-right"
+                                    onClick={onCancelClicked}>{cancel}</button>
                             <button className="btn btn-success btn-sm float-right" onClick={onSaveClicked}
                                     disabled={elementEdit.trim() === ''}>{check}</button>
                         </div>
                     </div>
 
                 </>
-                : <div  onDoubleClick={edit}>
+                : <div onDoubleClick={edit}>
                     {/*<button className="btn btn-sm float-sm-left" onClick={edit} >{editPen}</button>*/}
                     <div>{props.value}</div>
                     {/*<button className="btn btn-sm btn-secondary float-sm-right" onClick={edit}>*/}

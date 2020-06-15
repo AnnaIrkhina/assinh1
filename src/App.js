@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {v4 as uuidv4} from 'uuid';
 import './App.css';
 import axios from 'axios'
 import Element from "./Element";
@@ -8,9 +9,15 @@ import AddUser from "./AddUser";
 
 function App() {
     const [users, setUsers] = useState([]);
-    const [editingMode, setEditingMode] = useState(false)
+    const [addingMode, setAddingMode] = useState(false);
+    const [editingMode, setEditingMode] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+
+
     const load = () => {
-        setEditingMode(false);
+        setIsLoading(true);
+        setUsers([]);
+        setAddingMode(false);
         console.log('load');
         // fetch('https://jsonplaceholder.typicode.com/users')
         //     .then(response => response.json())
@@ -25,11 +32,12 @@ function App() {
             .then(function (response) {
                 console.log(response);
                 setUsers(response.data);
+                setIsLoading(false);
             });
     };
 
-    const onAddUser = ()=>{
-        setEditingMode(true);
+    const onAddUser = () => {
+        setAddingMode(true);
     }
 
     const saveName = (value, id) => {
@@ -95,11 +103,11 @@ function App() {
         console.log("saveAddress launched", elAddress, id);
 
         const updatedUsers = users.map(el => {
-            // if (el.id === id) return {...el, ...el.address, city: elAddress.city, street: elAddress.street, suite: elAddress.suite, zipcode: elAddress.zipcode};
-            if (el.id === id) { return {...el, address:elAddress}
-            console.log(el)
-            }
-                else return el;
+                // if (el.id === id) return {...el, ...el.address, city: elAddress.city, street: elAddress.street, suite: elAddress.suite, zipcode: elAddress.zipcode};
+                if (el.id === id) {
+                    return {...el, address: elAddress}
+                    console.log(el)
+                } else return el;
             }
         );
         setUsers(updatedUsers);
@@ -107,61 +115,75 @@ function App() {
         console.log("saveAddress finished");
 
     }
-    const saveCompany = (elCompany, id)=>{
+    const saveCompany = (elCompany, id) => {
         const updatedUsers = users.map(el => {
-            if(el.id === id){return {... el, company: elCompany}}
-            else return el;
+            if (el.id === id) {
+                return {...el, company: elCompany}
+            } else return el;
 
         });
         setUsers(updatedUsers);
 
     }
-    const canceAddUser = ()=>{
-        setEditingMode(false);
+    const canceAddUser = () => {
+        setAddingMode(false);
     }
 
-    const addUser = (el)=>{
-        const updatedUsers = [... users];
+    const addUser = (el) => {
+        const updatedUsers = [...users];
         updatedUsers.push(el)
         setUsers(updatedUsers);
-        setEditingMode(false);
+        setAddingMode(false);
 
     }
-    const maxID = ()=>{
+    const maxID = () => {
         let max = 0;
-        users.map(el=> { if(el.id > max) max = el.id});
+        users.map(el => {
+            if (el.id > max) max = el.id
+        });
         return max;
     }
-    const onCheck = (id)=>{
+    const onCheck = (id) => {
         console.log('onCheck launched with is = ' + id);
-        const updatedUsers = users.map(el=>{
-            if(el.id === id) {
-                if(el.checked === true){return{...el, checked: false}}
-                else{return{...el, checked: true}}
-            }
-            else {
-                if(el.checked === undefined){return{...el, checked: false}}
-                else return el;
+        const updatedUsers = users.map(el => {
+            if (el.id === id) {
+                if (el.checked === true) {
+                    return {...el, checked: false}
+                } else {
+                    return {...el, checked: true}
+                }
+            } else {
+                if (el.checked === undefined) {
+                    return {...el, checked: false}
+                } else return el;
             }
 
         });
         setUsers(updatedUsers);
 
     }
-    const removeAllChecked =()=>{
-        const updatedUsers = users.filter(el=> el.checked !== true);
+    const removeAllChecked = () => {
+        const updatedUsers = users.filter(el => el.checked !== true);
         setUsers(updatedUsers);
     }
     return (
         <div>
             <h1>Users</h1>
-            {users.length <= 0 ?<button className="btn btn-primary m-1" onClick={load}>Load Users</button>
-                :<><button className="btn btn-primary m-1" onClick={load}>Reload Users</button>
-                    <button className="btn btn-primary m-1" onClick={removeAllChecked}>Remove All Checked</button>
-                {!editingMode? <button className="btn btn-primary m-1" onClick={onAddUser}>Add User</button>
-                :<></>}
-                </>
+            {isLoading ?
+            <button className="btn btn-primary m-1" type="button" disabled>
+                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Loading...
+            </button>
+            :
+            <>
+                <button className="btn btn-primary m-1" onClick={load} >Reload Users</button>
+
+                <button className="btn btn-primary m-1" onClick={removeAllChecked} hidden={users.length <= 0}>Remove All Checked</button>
+                {!addingMode ? <button className="btn btn-primary m-1" onClick={onAddUser} hidden={users.length <= 0}>Add User</button>
+                    : <></>}
+            </>
             }
+
             {users.length > 0 ?
                 <div>
                     <table className="table table table-hover table-bordered table-striped">
@@ -178,17 +200,25 @@ function App() {
                         </tr>
                         </thead>
                         <tbody className="text-body">
-                        {editingMode?<AddUser id={maxID()+1} addUser={addUser} canceAddUser={canceAddUser}/>:<></>}
+                        {addingMode ? <AddUser id={maxID() + 1} addUser={addUser} canceAddUser={canceAddUser}/> : <></>}
                         {users.map(el =>
                             <tr>
-                                <td>{el.id}<input type="checkbox" onClick={()=>onCheck(el.id)} checked={el.checked === true}/></td>
-                                <td><Element value={el.name} id={el.id} saveValue={saveName}/></td>
-                                <td><Element value={el.username} id={el.id} saveValue={saveUserName}/></td>
-                                <td><Element value={el.email} id={el.id} saveValue={saveEmail}/></td>
-                                <td><AddressElement address={el.address} id={el.id} saveValue={saveAddress}/></td>
-                                <td><Element value={el.phone} id={el.id} saveValue={savePhone}/></td>
-                                <td><Element value={el.website} id={el.id} saveValue={saveWebsite}/></td>
-                                <td><CompanyElement company={el.company}  id={el.id} saveValue={saveCompany}/></td>
+                                <td>{el.id}<input type="checkbox" onClick={() => onCheck(el.id)}
+                                                  checked={el.checked === true}/></td>
+                                <td><Element setEditingMode={setEditingMode} editingMode={editingMode}
+                                             idElement={uuidv4()} value={el.name} id={el.id} saveValue={saveName}/></td>
+                                <td><Element setEditingMode={setEditingMode} editingMode={editingMode}
+                                             value={el.username} id={el.id} saveValue={saveUserName}/></td>
+                                <td><Element setEditingMode={setEditingMode} editingMode={editingMode} value={el.email}
+                                             id={el.id} saveValue={saveEmail}/></td>
+                                <td><AddressElement setEditingMode={setEditingMode} editingMode={editingMode}
+                                                    address={el.address} id={el.id} saveValue={saveAddress}/></td>
+                                <td><Element setEditingMode={setEditingMode} editingMode={editingMode} value={el.phone}
+                                             id={el.id} saveValue={savePhone}/></td>
+                                <td><Element setEditingMode={setEditingMode} editingMode={editingMode}
+                                             value={el.website} id={el.id} saveValue={saveWebsite}/></td>
+                                <td><CompanyElement setEditingMode={setEditingMode} editingMode={editingMode}
+                                                    company={el.company} id={el.id} saveValue={saveCompany}/></td>
                             </tr>
                         )}
                         </tbody>

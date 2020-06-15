@@ -38,35 +38,37 @@ function CompanyElement(props) {
     // const [zippEdit, setZippEdit] = useState('');
 
     const edit = () => {
-        setEditMode(true);
-        setElementEdit(props.company);
-        // setCityEdit(props.address.city);
-        // setStreetEdit(props.address.street);
-        // setSuiteEdit(props.address.suite);
-        // setZippEdit()
+        if (props.editingMode === false) {
+            setEditMode(true);
+            setElementEdit(props.company);
+            props.setEditingMode(true);
+        }
+
 
     }
     const changeCompanyName = (e) => {
-        setElementEdit({...elementEdit, name:e.target.value});
+        setElementEdit({...elementEdit, name: e.target.value});
 
     }
     const changeBS = (e) => {
-        setElementEdit({...elementEdit, bs:e.target.value});
+        setElementEdit({...elementEdit, bs: e.target.value});
 
     }
     const changeCatch = (e) => {
-        setElementEdit({...elementEdit, catchPhrase:e.target.value});
+        setElementEdit({...elementEdit, catchPhrase: e.target.value});
 
     }
 
     const onCancelClicked = () => {
         setEditMode(false);
         setElementEdit({});
+        props.setEditingMode(false);
     }
     const onSaveClicked = () => {
         props.saveValue(elementEdit, props.id);
         setEditMode(false);
         setElementEdit('');
+        props.setEditingMode(false);
     }
 
     return (
@@ -86,9 +88,10 @@ function CompanyElement(props) {
                                value={elementEdit.catchPhrase} onChange={changeCatch} autoFocus="true"/>
 
                         <div className="button_group">
-                            <button className="btn btn-sm btn-danger float-right" onClick={onCancelClicked}>{cancel}</button>
+                            <button className="btn btn-sm btn-danger float-right"
+                                    onClick={onCancelClicked}>{cancel}</button>
                             <button className="btn btn-sm btn-success float-right" onClick={onSaveClicked}
-                                    disabled={elementEdit.name.trim() === '' && elementEdit.bs.trim()  === ''&& elementEdit.catchPhrase.trim() === ''}>{check}</button>
+                                    disabled={elementEdit.name.trim() === '' && elementEdit.bs.trim() === '' && elementEdit.catchPhrase.trim() === ''}>{check}</button>
 
                         </div>
                     </div>
