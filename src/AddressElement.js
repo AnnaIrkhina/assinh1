@@ -30,25 +30,17 @@ const editPen = (
 
 function AddressElement(props) {
 
-    const [editMode, setEditMode] = useState(false);
-    const [elementEdit, setElementEdit] = useState({})
-    // const [cityEdit, setCityEdit] = useState('');
-    // const [streetEdit, setStreetEdit] = useState('');
-    // const [suiteEdit, setSuiteEdit] = useState('');
-    // const [zippEdit, setZippEdit] = useState('');
 
-    const edit = () => {
-        if (props.editingMode === false) {
-            setEditMode(true);
-            setElementEdit(props.address);
-            props.setEditingMode(true);
-        }
-        // setCityEdit(props.address.city);
-        // setStreetEdit(props.address.street);
-        // setSuiteEdit(props.address.suite);
-        // setZippEdit()
+    const [editCityMode, setCityEditMode] = useState(false);
+    const [editStreetMode, setStreetEditMode] = useState(false);
+    const [editSuitMode, setSuitEditMode] = useState(false);
+    const [editZipcodeMode, setZipcodeEditMode] = useState(false);
 
-    }
+
+    const [elementEdit, setElementEdit] = useState(props.address)
+
+
+
     const changeCity = (e) => {
         setElementEdit({...elementEdit, city: e.target.value});
 
@@ -65,63 +57,59 @@ function AddressElement(props) {
         setElementEdit({...elementEdit, zipcode: e.target.value});
 
     }
-    const onCancelClicked = () => {
-        setEditMode(false);
-        setElementEdit({});
-        props.setEditingMode(false);
-    }
+
     const onSaveClicked = () => {
         props.saveValue(elementEdit, props.id);
-        setEditMode(false);
-        setElementEdit('');
-        props.setEditingMode(false);
+
+
+        setCityEditMode(false);
+        setStreetEditMode(false)
+        setSuitEditMode(false);
+        setZipcodeEditMode(false);
+
+
+
+
     }
 
     return (
         <div>
-            {editMode ?
-                <>
-                    <div className="form-group">
-
-                        <label>City:</label>
-                        <input type="text" className="form-control" id="formControlInput1"
-                               value={elementEdit.city} onChange={changeCity} autoFocus="true"/>
-                        <label>Street:</label>
-                        <input type="text" className="form-control" id="formControlInput1"
-                               value={elementEdit.street} onChange={changeStreet} autoFocus="true"/>
-                        <label>Suite:</label>
-                        <input type="text" className="form-control" id="formControlInput1"
-                               value={elementEdit.suite} onChange={changeSuite} autoFocus="true"/>
-                        <label>Zipcode:</label>
-                        <input type="text" className="form-control" id="formControlInput1"
-                               value={elementEdit.zipcode} onChange={changeZipcode} autoFocus="true"/>
 
 
-                        <div className="button_group">
-
-                            <button  className="btn btn-sm btn-danger float-right"
-                                    onClick={onCancelClicked}>{cancel}</button>
-                            <button  className="btn btn-sm btn-success float-right" onClick={onSaveClicked}
-                                    disabled={elementEdit.city.trim() === '' && elementEdit.street.trim() === '' && elementEdit.suite.trim() === '' && elementEdit.zipcode.trim() === ''}>{check}</button>
-
-                        </div>
-
-                    </div>
-
-                </>
-                : <div onDoubleClick={edit}>
-                    <div><b>City: </b>{props.address.city}</div>
-                    <div><b>Street: </b>{props.address.street}</div>
-                    <div><b>Suite: </b>{props.address.suite}</div>
-                    <div><b>Zipcode: </b>{props.address.zipcode}</div>
-
-                    {/*<button className="btn btn-sm  btn-secondary float-sm-right" onClick={edit}>*/}
-                    {/*    {editPen}*/}
-                    {/*</button>*/}
-
-
-                </div>
+            <label><b>City:</b></label>
+            {
+                editCityMode ?
+                <input type="text" className="form-control" id="cityInput1" autoFocus={true}
+                       value={elementEdit.city} onChange={changeCity}
+                       onBlur={onSaveClicked}/>
+                : <div onDoubleClick={()=>{setCityEditMode(true)}}>{props.address.city}</div>
             }
+            <label><b>Street:</b></label>
+            {
+                editStreetMode ?
+                    <input type="text" className="form-control" id="StreetInput1" autoFocus={true}
+                           value={elementEdit.street} onChange={changeStreet}
+                           onBlur={onSaveClicked}/>
+                    : <div onDoubleClick={()=>{setStreetEditMode(true)}}>{props.address.street}</div>
+            }
+            <label><b>Suite:</b></label>
+            {
+                editSuitMode ?
+                    <input type="text" className="form-control" id="SuitInput1" autoFocus={true}
+                           value={elementEdit.suite} onChange={changeSuite}
+                           onBlur={onSaveClicked}/>
+                    : <div onDoubleClick={()=>{setSuitEditMode(true)}}>{props.address.suite}</div>
+            }
+            <label><b>Zipcode:</b></label>
+            {
+                editZipcodeMode ?
+                    <input type="text" className="form-control" id="zipcodeInput1" autoFocus={true}
+                           value={elementEdit.zipcode} onChange={changeZipcode}
+                           onBlur={onSaveClicked}/>
+                    : <div onDoubleClick={()=>{setZipcodeEditMode(true)}}>{props.address.zipcode}</div>
+            }
+
+
         </div>
     );
 }

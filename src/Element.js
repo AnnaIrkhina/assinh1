@@ -34,12 +34,8 @@ function Element(props) {
     const [elementEdit, setElementEdit] = useState('')
 
     const edit = () => {
-        if (props.editingMode === false) {
-            setEditMode(true);
-            setElementEdit(props.value);
-            props.setEditingMode(true);
-
-        }
+        setEditMode(true);
+        setElementEdit(props.value);
 
     }
     const change = (e) => {
@@ -47,20 +43,16 @@ function Element(props) {
         console.log(e.target.value);
 
     }
-    const onCancelClicked = () => {
-        setEditMode(false);
-        setElementEdit('');
-        props.setEditingMode(false);
-    }
+
     const onSaveClicked = () => {
         props.saveValue(elementEdit, props.id);
         setEditMode(false);
         setElementEdit('');
-        props.setEditingMode(false);
+
     }
     const onKeyPressed = (e) => {
         if (e.key === "Enter") onSaveClicked();
-        if (e.keyCode == 27) onCancelClicked();
+
         console.log(e.key);
 
     }
@@ -70,19 +62,19 @@ function Element(props) {
         <div>
             {editMode ?
                 <>
-                    <div className="form-group">
+                    <div className="form-group" onBlur={onSaveClicked}>
 
                         <input type="text" className="form-control" id="formControlInput1"
                                value={elementEdit} onChange={change} autoFocus="true"
                                onKeyPress={onKeyPressed}
                         />
-                        <div className="button_group">
+                        {/*<div className="button_group">*/}
 
-                            <button className="btn btn-sm btn-danger float-right"
-                                    onClick={onCancelClicked}>{cancel}</button>
-                            <button className="btn btn-success btn-sm float-right" onClick={onSaveClicked}
-                                    disabled={elementEdit.trim() === ''}>{check}</button>
-                        </div>
+                        {/*    <button className="btn btn-sm btn-danger float-right"*/}
+                        {/*            onClick={onCancelClicked}>{cancel}</button>*/}
+                        {/*    <button className="btn btn-success btn-sm float-right" onClick={onSaveClicked}*/}
+                        {/*            disabled={elementEdit.trim() === ''}>{check}</button>*/}
+                        {/*</div>*/}
                     </div>
 
                 </>

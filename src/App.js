@@ -10,7 +10,7 @@ import AddUser from "./AddUser";
 function App() {
     const [users, setUsers] = useState([]);
     const [addingMode, setAddingMode] = useState(false);
-    const [editingMode, setEditingMode] = useState(false);
+
     const [isLoading, setIsLoading] = useState(false);
 
 
@@ -205,19 +205,19 @@ function App() {
                             <tr>
                                 <td>{el.id}<input type="checkbox" onClick={() => onCheck(el.id)}
                                                   checked={el.checked === true}/></td>
-                                <td><Element setEditingMode={setEditingMode} editingMode={editingMode}
-                                             idElement={uuidv4()} value={el.name} id={el.id} saveValue={saveName}/></td>
-                                <td><Element setEditingMode={setEditingMode} editingMode={editingMode}
+                                <td><Element
+                                             value={el.name} id={el.id} saveValue={saveName}/></td>
+                                <td><Element
                                              value={el.username} id={el.id} saveValue={saveUserName}/></td>
-                                <td><Element setEditingMode={setEditingMode} editingMode={editingMode} value={el.email}
+                                <td><Element  value={el.email}
                                              id={el.id} saveValue={saveEmail}/></td>
-                                <td><AddressElement setEditingMode={setEditingMode} editingMode={editingMode}
+                                <td><AddressElement
                                                     address={el.address} id={el.id} saveValue={saveAddress}/></td>
-                                <td><Element setEditingMode={setEditingMode} editingMode={editingMode} value={el.phone}
+                                <td><Element value={el.phone}
                                              id={el.id} saveValue={savePhone}/></td>
-                                <td><Element setEditingMode={setEditingMode} editingMode={editingMode}
+                                <td><Element
                                              value={el.website} id={el.id} saveValue={saveWebsite}/></td>
-                                <td><CompanyElement setEditingMode={setEditingMode} editingMode={editingMode}
+                                <td><CompanyElement
                                                     company={el.company} id={el.id} saveValue={saveCompany}/></td>
                             </tr>
                         )}
