@@ -218,7 +218,7 @@ function App() {
                 hasMore={true}
                 loader={<div className="loader" key={0}>Loading ...</div>}
                 useWindow={true}
-                threshold = {250}
+                threshold = {100}
 
             >
                 <h1>Users</h1>
