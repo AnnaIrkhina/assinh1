@@ -5,6 +5,7 @@ import Element from "./Element";
 import AddressElement from "./AddressElement";
 import CompanyElement from "./CompanyElement";
 import AddUser from "./AddUser";
+import InfiniteScroll from 'react-infinite-scroller';
 
 const filt = (<svg className="bi bi-filter" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
                    xmlns="http://www.w3.org/2000/svg">
@@ -20,12 +21,12 @@ function App() {
     const [isLoading, setIsLoading] = useState(false);
     const [filter, setFilter] = useState({})
 
-    const [list, setList]=useState(users);
+    const [list, setList] = useState(users);
 
 
     const load = () => {
         setIsLoading(true);
-        setUsers([]);
+        //setUsers([]);
         setAddingMode(false);
         console.log('load');
         // fetch('https://jsonplaceholder.typicode.com/users')
@@ -40,8 +41,8 @@ function App() {
         })
             .then(function (response) {
                 console.log(response);
-                setUsers(response.data);
-                setList(response.data);
+                setUsers([...users, ...response.data]);
+                setList([...list, ...response.data]);
                 setIsLoading(false);
             });
     };
@@ -190,7 +191,7 @@ function App() {
         Object.keys(newFilter).map(filt => {
             updatedUsers = users.filter(el => {
                 console.log(el[filt].toLowerCase().includes(newFilter[filt].toLowerCase()))
-                return(el[filt].toLowerCase().includes(newFilter[filt].toLowerCase()))
+                return (el[filt].toLowerCase().includes(newFilter[filt].toLowerCase()))
             })
         })
         setList(updatedUsers)
@@ -199,87 +200,113 @@ function App() {
 
     }
     return (
-        <div>
-            <h1>Users</h1>
-            {isLoading ?
-                <button className="btn btn-primary m-1" type="button" disabled>
-                    <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    Loading...
-                </button>
-                :
-                <>
-                    <button className="btn btn-primary m-1" onClick={load}>Reload Users</button>
+        // <div style="height:700px;overflow:auto;">
+        //     <InfiniteScroll
+        //         pageStart={0}
+        //         loadMore={loadFunc}
+        //         hasMore={true || false}
+        //         loader={<div className="loader" key={0}>Loading ...</div>}
+        //         useWindow={false}
+        //     >
+        //         {items}
+        //     </InfiniteScroll>
+        // </div>
+        <div >
+            <InfiniteScroll
+                pageStart={0}
+                loadMore={load}
+                hasMore={true}
+                loader={<div className="loader" key={0}>Loading ...</div>}
+                useWindow={true}
+                threshold = {250}
 
-                    <button className="btn btn-primary m-1" onClick={removeAllChecked} hidden={users.length <= 0}>Remove
-                        All Checked
+            >
+                <h1>Users</h1>
+                {isLoading ?
+                    <button className="btn btn-primary m-1" type="button" disabled>
+                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Loading...
                     </button>
-                    {!addingMode ?
-                        <button className="btn btn-primary m-1" onClick={onAddUser} hidden={users.length <= 0}>Add
-                            User</button>
-                        : <></>}
-                </>
-            }
+                    :
+                    <>
+                        <button className="btn btn-primary m-1" onClick={load}>Reload Users</button>
 
-            {users.length > 0 ?
-                <div>
-                    <table className="table table table-hover table-bordered table-striped">
-                        <thead className="thead-light">
-                        <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Username</th>
-                            <th scope="col">email</th>
-                            <th scope="col">Address</th>
-                            <th scope="col">Phone</th>
-                            <th scope="col">Website</th>
-                            <th scope="col">Company</th>
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <th><input type="text" className="form-control" id="filterName" onChange={(e) => {
-                                filterChange(e, 'name')
-                            }}/>{filt}</th>
-                            <th><input type="text" className="form-control" id="filterUsername" onChange={(e) => {
-                                filterChange(e, 'username')}}/>{filt}</th>
-                            <th><input type="text" className="form-control" id="filterEmail" onChange={(e) => {
-                                filterChange(e, 'email')}}/>{filt}</th>
-                            <th><input type="text" className="form-control" id="filterAddress"/>{filt}</th>
-                            <th><input type="text" className="form-control" id="filterPhone" onChange={(e) => {
-                                filterChange(e, 'phone')}}/>{filt}</th>
-                            <th><input type="text" className="form-control" id="filterWebsite" onChange={(e) => {
-                                filterChange(e, 'website')}}/>{filt}</th>
-                            <th><input type="text" className="form-control" id="FilterCompany" />{filt}</th>
+                        <button className="btn btn-primary m-1" onClick={removeAllChecked}
+                                hidden={users.length <= 0}>Remove
+                            All Checked
+                        </button>
+                        {!addingMode ?
+                            <button className="btn btn-primary m-1" onClick={onAddUser} hidden={users.length <= 0}>Add
+                                User</button>
+                            : <></>}
+                    </>
+                }
 
-                        </tr>
-                        </thead>
-                        <tbody className="text-body">
-                        {addingMode ? <AddUser id={maxID() + 1} addUser={addUser} canceAddUser={canceAddUser}/> : <></>}
-                        {list.map(el =>
+                {users.length > 0 ?
+                    <div>
+                        <table className="table table table-hover table-bordered table-striped">
+                            <thead className="thead-light">
                             <tr>
-                                <td>{el.id}<input type="checkbox" onClick={() => onCheck(el.id)}
-                                                  checked={el.checked === true}/></td>
-                                <td><Element
-                                    value={el.name} id={el.id} saveValue={saveName}/></td>
-                                <td><Element
-                                    value={el.username} id={el.id} saveValue={saveUserName}/></td>
-                                <td><Element value={el.email}
-                                             id={el.id} saveValue={saveEmail}/></td>
-                                <td><AddressElement
-                                    address={el.address} id={el.id} saveValue={saveAddress}/></td>
-                                <td><Element value={el.phone}
-                                             id={el.id} saveValue={savePhone}/></td>
-                                <td><Element
-                                    value={el.website} id={el.id} saveValue={saveWebsite}/></td>
-                                <td><CompanyElement
-                                    company={el.company} id={el.id} saveValue={saveCompany}/></td>
+                                <th scope="col">ID</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Username</th>
+                                <th scope="col">email</th>
+                                <th scope="col">Address</th>
+                                <th scope="col">Phone</th>
+                                <th scope="col">Website</th>
+                                <th scope="col">Company</th>
                             </tr>
-                        )}
-                        </tbody>
-                    </table>
-                </div>
-                : <></>
-            }
+                            <tr>
+                                <th></th>
+                                <th><input type="text" className="form-control" id="filterName" onChange={(e) => {
+                                    filterChange(e, 'name')
+                                }}/>{filt}</th>
+                                <th><input type="text" className="form-control" id="filterUsername" onChange={(e) => {
+                                    filterChange(e, 'username')
+                                }}/>{filt}</th>
+                                <th><input type="text" className="form-control" id="filterEmail" onChange={(e) => {
+                                    filterChange(e, 'email')
+                                }}/>{filt}</th>
+                                <th><input type="text" className="form-control" id="filterAddress"/>{filt}</th>
+                                <th><input type="text" className="form-control" id="filterPhone" onChange={(e) => {
+                                    filterChange(e, 'phone')
+                                }}/>{filt}</th>
+                                <th><input type="text" className="form-control" id="filterWebsite" onChange={(e) => {
+                                    filterChange(e, 'website')
+                                }}/>{filt}</th>
+                                <th><input type="text" className="form-control" id="FilterCompany"/>{filt}</th>
 
+                            </tr>
+                            </thead>
+                            <tbody className="text-body">
+                            {addingMode ?
+                                <AddUser id={maxID() + 1} addUser={addUser} canceAddUser={canceAddUser}/> : <></>}
+                            {list.map(el =>
+                                <tr>
+                                    <td>{el.id}<input type="checkbox" onClick={() => onCheck(el.id)}
+                                                      checked={el.checked === true}/></td>
+                                    <td><Element
+                                        value={el.name} id={el.id} saveValue={saveName}/></td>
+                                    <td><Element
+                                        value={el.username} id={el.id} saveValue={saveUserName}/></td>
+                                    <td><Element value={el.email}
+                                                 id={el.id} saveValue={saveEmail}/></td>
+                                    <td><AddressElement
+                                        address={el.address} id={el.id} saveValue={saveAddress}/></td>
+                                    <td><Element value={el.phone}
+                                                 id={el.id} saveValue={savePhone}/></td>
+                                    <td><Element
+                                        value={el.website} id={el.id} saveValue={saveWebsite}/></td>
+                                    <td><CompanyElement
+                                        company={el.company} id={el.id} saveValue={saveCompany}/></td>
+                                </tr>
+                            )}
+                            </tbody>
+                        </table>
+                    </div>
+                    : <></>
+                }
+            </InfiniteScroll>
         </div>
     );
 }
