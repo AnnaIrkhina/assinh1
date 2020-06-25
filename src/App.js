@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import {v4 as uuidv4} from 'uuid';
 import './App.css';
 import axios from 'axios'
 import Element from "./Element";
@@ -7,11 +6,21 @@ import AddressElement from "./AddressElement";
 import CompanyElement from "./CompanyElement";
 import AddUser from "./AddUser";
 
+const filt = (<svg className="bi bi-filter" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
+                   xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd"
+          d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+</svg>)
+
+
 function App() {
     const [users, setUsers] = useState([]);
     const [addingMode, setAddingMode] = useState(false);
 
     const [isLoading, setIsLoading] = useState(false);
+    const [filter, setFilter] = useState({})
+
+    const [list, setList]=useState(users);
 
 
     const load = () => {
@@ -32,6 +41,7 @@ function App() {
             .then(function (response) {
                 console.log(response);
                 setUsers(response.data);
+                setList(response.data);
                 setIsLoading(false);
             });
     };
@@ -165,23 +175,49 @@ function App() {
     const removeAllChecked = () => {
         const updatedUsers = users.filter(el => el.checked !== true);
         setUsers(updatedUsers);
+        //setInitalUsers(updatedUsers);
+    }
+
+    const filterChange = (e, fild) => {
+        const newFilter = {...filter}
+        newFilter[fild] = e.target.value
+        setFilter(newFilter)
+        console.log(newFilter);
+        console.log(users);
+        console.log(Object.keys(newFilter));
+        let updatedUsers = []
+        //setUsers(initialUsers);
+        Object.keys(newFilter).map(filt => {
+            updatedUsers = users.filter(el => {
+                console.log(el[filt].toLowerCase().includes(newFilter[filt].toLowerCase()))
+                return(el[filt].toLowerCase().includes(newFilter[filt].toLowerCase()))
+            })
+        })
+        setList(updatedUsers)
+
+        console.log(updatedUsers);
+
     }
     return (
         <div>
             <h1>Users</h1>
             {isLoading ?
-            <button className="btn btn-primary m-1" type="button" disabled>
-                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                Loading...
-            </button>
-            :
-            <>
-                <button className="btn btn-primary m-1" onClick={load} >Reload Users</button>
+                <button className="btn btn-primary m-1" type="button" disabled>
+                    <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Loading...
+                </button>
+                :
+                <>
+                    <button className="btn btn-primary m-1" onClick={load}>Reload Users</button>
 
-                <button className="btn btn-primary m-1" onClick={removeAllChecked} hidden={users.length <= 0}>Remove All Checked</button>
-                {!addingMode ? <button className="btn btn-primary m-1" onClick={onAddUser} hidden={users.length <= 0}>Add User</button>
-                    : <></>}
-            </>
+                    <button className="btn btn-primary m-1" onClick={removeAllChecked} hidden={users.length <= 0}>Remove
+                        All Checked
+                    </button>
+                    {!addingMode ?
+                        <button className="btn btn-primary m-1" onClick={onAddUser} hidden={users.length <= 0}>Add
+                            User</button>
+                        : <></>}
+                </>
             }
 
             {users.length > 0 ?
@@ -198,27 +234,44 @@ function App() {
                             <th scope="col">Website</th>
                             <th scope="col">Company</th>
                         </tr>
+                        <tr>
+                            <th></th>
+                            <th><input type="text" className="form-control" id="filterName" onChange={(e) => {
+                                filterChange(e, 'name')
+                            }}/>{filt}</th>
+                            <th><input type="text" className="form-control" id="filterUsername" onChange={(e) => {
+                                filterChange(e, 'username')}}/>{filt}</th>
+                            <th><input type="text" className="form-control" id="filterEmail" onChange={(e) => {
+                                filterChange(e, 'email')}}/>{filt}</th>
+                            <th><input type="text" className="form-control" id="filterAddress"/>{filt}</th>
+                            <th><input type="text" className="form-control" id="filterPhone" onChange={(e) => {
+                                filterChange(e, 'phone')}}/>{filt}</th>
+                            <th><input type="text" className="form-control" id="filterWebsite" onChange={(e) => {
+                                filterChange(e, 'website')}}/>{filt}</th>
+                            <th><input type="text" className="form-control" id="FilterCompany" />{filt}</th>
+
+                        </tr>
                         </thead>
                         <tbody className="text-body">
                         {addingMode ? <AddUser id={maxID() + 1} addUser={addUser} canceAddUser={canceAddUser}/> : <></>}
-                        {users.map(el =>
+                        {list.map(el =>
                             <tr>
                                 <td>{el.id}<input type="checkbox" onClick={() => onCheck(el.id)}
                                                   checked={el.checked === true}/></td>
                                 <td><Element
-                                             value={el.name} id={el.id} saveValue={saveName}/></td>
+                                    value={el.name} id={el.id} saveValue={saveName}/></td>
                                 <td><Element
-                                             value={el.username} id={el.id} saveValue={saveUserName}/></td>
-                                <td><Element  value={el.email}
+                                    value={el.username} id={el.id} saveValue={saveUserName}/></td>
+                                <td><Element value={el.email}
                                              id={el.id} saveValue={saveEmail}/></td>
                                 <td><AddressElement
-                                                    address={el.address} id={el.id} saveValue={saveAddress}/></td>
+                                    address={el.address} id={el.id} saveValue={saveAddress}/></td>
                                 <td><Element value={el.phone}
                                              id={el.id} saveValue={savePhone}/></td>
                                 <td><Element
-                                             value={el.website} id={el.id} saveValue={saveWebsite}/></td>
+                                    value={el.website} id={el.id} saveValue={saveWebsite}/></td>
                                 <td><CompanyElement
-                                                    company={el.company} id={el.id} saveValue={saveCompany}/></td>
+                                    company={el.company} id={el.id} saveValue={saveCompany}/></td>
                             </tr>
                         )}
                         </tbody>
